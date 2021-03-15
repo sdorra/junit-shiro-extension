@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ShiroExtension implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
@@ -32,15 +33,28 @@ public class ShiroExtension implements BeforeAllCallback, BeforeEachCallback, Af
 
   private TestingToken createToken(ExtensionContext context) {
     List<SubjectAware> annotations = new ArrayList<>();
-    SubjectAware classAnnotation = context.getRequiredTestClass().getAnnotation(SubjectAware.class);
-    if (classAnnotation != null) {
-      annotations.add(classAnnotation);
-    }
+    appendParent(annotations, context);
+    appendMethod(context, annotations);
+    return TestingToken.from(annotations);
+  }
+
+  private void appendMethod(ExtensionContext context, List<SubjectAware> annotations) {
     SubjectAware methodAnnotation = context.getRequiredTestMethod().getAnnotation(SubjectAware.class);
     if (methodAnnotation != null) {
       annotations.add(methodAnnotation);
     }
-    return TestingToken.from(annotations);
+  }
+
+  private void appendParent( List<SubjectAware> annotations, ExtensionContext context) {
+    Optional<ExtensionContext> parent = context.getParent();
+    parent.ifPresent(extensionContext -> appendParent(annotations, extensionContext));
+    Optional<Class<?>> testClass = context.getTestClass();
+    if (testClass.isPresent()) {
+      SubjectAware annotation = testClass.get().getAnnotation(SubjectAware.class);
+      if (annotation != null) {
+        annotations.add(annotation);
+      }
+    }
   }
 
   @Override

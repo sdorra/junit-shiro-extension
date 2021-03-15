@@ -2,6 +2,7 @@ package org.github.sdorra.jse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -53,5 +54,33 @@ class ShiroExtensionTest {
     assertThat(subject.isPermitted("one:dot:one")).isTrue();
     assertThat(subject.isPermitted("a:b")).isTrue();
     assertThat(subject.isPermitted("a:c")).isTrue();
+  }
+
+  @Nested
+  @SubjectAware(value = "marvin", roles = "thenestedone")
+  class NestedInheritance {
+
+    @Test
+    void shouldReturnNestedPrincipal() {
+      Subject subject = SecurityUtils.getSubject();
+      assertThat(subject.getPrincipal()).isEqualTo("marvin");
+    }
+
+    @Test
+    void shouldApplyRolesFromNestedAndClass() {
+      Subject subject = SecurityUtils.getSubject();
+      assertThat(subject.hasRole("user")).isTrue();
+      assertThat(subject.hasRole("thenestedone")).isTrue();
+    }
+  }
+
+  @Nested
+  class NestedWithoutAnnotation {
+
+    @Test
+    void shouldReturnClassPrincipal() {
+      Subject subject = SecurityUtils.getSubject();
+      assertThat(subject.getPrincipal()).isEqualTo("trillian");
+    }
   }
 }
