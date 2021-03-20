@@ -31,9 +31,11 @@ class ShiroExtensionTest {
 The `SubjectAware` annotation can be placed on classes, nested classes or on methods.
 Roles and permissions are merged. If the `value` is of `SubjectAware` is empty, no subject is bound.
 
+For more samples have a look at the [ShiroExtensionTest](lib/src/test/java/org/github/sdorra/jse/ShiroExtensionTest.java).
+
 ## Installation
 
-Get the latest stable version from [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdorra/junit-shiro-extension.svg)](https://search.maven.org/search?q=g:com.github.sdorra%20a:junit-shiro-extension).
+Get the latest stable version from [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdorra/junit-shiro-extension.svg)](https://search.maven.org/search?q=g:com.github.sdorra%20a:junit-shiro-extension)
 
 ### Gradle
 
