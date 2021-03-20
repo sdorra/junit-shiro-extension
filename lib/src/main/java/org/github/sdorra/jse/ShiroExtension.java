@@ -39,6 +39,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@link ShiroExtension} binds an Apache Shiro {@link org.apache.shiro.mgt.SecurityManager},
+ * collects {@link SubjectAware} annotations  and binds the {@link org.apache.shiro.subject.Subject}
+ * before each test.
+ *
+ * @since 1.0.0
+ */
 public class ShiroExtension implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
   @Override

@@ -30,11 +30,35 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Configure how the {@link org.apache.shiro.subject.Subject} should look like before your test is executed.
+ * Roles and permission of the {@link SubjectAware} annotations are merged,
+ * if the annotation is specified on class and method.
+ *
+ * @since 1.0.0
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface SubjectAware {
+  /**
+   * The primary principal of the subject.
+   *
+   * @return primary principal
+   */
   String value() default "";
+
+  /**
+   * Specify roles of the subject.
+   *
+   * @return roles
+   */
   String[] roles() default {};
+
+  /**
+   * Specify permission of the subject.
+   *
+   * @return permissions
+   */
   String[] permissions() default {};
 }
