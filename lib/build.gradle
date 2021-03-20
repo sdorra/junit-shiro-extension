@@ -24,6 +24,8 @@
 
 plugins {
   id 'java-library'
+  id 'signing'
+  id 'maven-publish'
 }
 
 repositories {
@@ -41,4 +43,53 @@ dependencies {
 tasks.named('test') {
   // Use junit platform for unit tests.
   useJUnitPlatform()
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from(components.java)
+      artifactId = 'junit-shiro-extension'
+      pom {
+        name = 'JUnit Shiro Extension'
+        description = 'Simplify unit tests with JUnit 5 and Apache Shiro.'
+        url = 'https://github.com/sdorra/junit-shiro-extension'
+        inceptionYear = '2021'
+        licenses {
+          license {
+            name = 'The MIT license'
+            url = 'https://www.opensource.org/licenses/mit-license.php'
+          }
+        }
+        developers {
+          developer {
+            id = 'sdorra'
+            name = 'Sebastian Sdorra'
+            email = 's.sdorra@gmail.com'
+            timezone = 'Europe/Berlin'
+          }
+        }
+        scm {
+          url = 'https://github.com/sdorra/junit-shiro-extension'
+          connection = 'scm:git:git://github.com/sdorra/junit-shiro-extension.git'
+          developerConnection = 'scm:git:git://github.com/sdorra/junit-shiro-extension.git'
+        }
+        issueManagement {
+          system = "github"
+          url = 'https://github.com/sdorra/junit-shiro-extension/issues'
+        }
+      }
+    }
+  }
+}
+
+signing {
+  useGpgCmd()
+  sign publishing.publications
+}
+
+nexusPublishing {
+  repositories {
+    sonatype()
+  }
 }
